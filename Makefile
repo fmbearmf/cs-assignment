@@ -14,8 +14,8 @@ SHARED_FILES =
 all: tests.exe
 
 .PHONY: tests.exe # Always force rebuild of tests
-tests.exe: $(TEST_FILES) $(SHARED_FILES) $(HEADERS)
-	$(CXX) $(CXXFLAGS) $(TEST_FILES) $(SHARED_FILES) -o $@
+tests.exe:  $(SHARED_FILES) $(TEST_FILES) $(HEADERS)
+	$(CXX) $(CXXFLAGS) $(SHARED_FILES) $(TEST_FILES) -o $@
 
 .PHONY: clean
 clean:
