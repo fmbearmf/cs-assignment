@@ -2,17 +2,22 @@
 ifeq ($(OS),Windows_NT)
 	CXX = g++
 else
-	OS_NAME := $(shell uname -s)
-	ifeq ($(OS_NAME),Darwin)
-		CXX = g++-15
-	else
-		CXX = g++
-	endif
+	# unnecessary with Nix
+
+	#OS_NAME := $(shell uname -s)
+	#ifeq ($(OS_NAME),Darwin)
+	#	CXX = g++-15
+	#else
+	#	CXX = g++
+	#endif
+
+	CXX = "c++"
 endif
 
 # compiler options
 CXXFLAGS = -g -Wall -Wextra
-CXXFLAGS += -std=c++20 -fmodules-ts -pedantic -pedantic-errors
+# -fmodules-ts was renamed to -fmodules in Clang
+CXXFLAGS += -std=c++20 -fmodules -pedantic -pedantic-errors
 CXXFLAGS += -Wfloat-equal -Wredundant-decls -Wshadow -Wconversion -Wuninitialized
 # uncomment the following lines to enable address sanitizer on non-Windows platforms
 # ifneq ($(OS),Windows_NT)
@@ -24,7 +29,7 @@ HEADERS =
 
 # list .cpp files here
 TEST_FILES = tests.cpp
-SHARED_FILES = 
+SHARED_FILES =
 
 .PHONY: all
 all: tests.exe
@@ -35,4 +40,4 @@ tests.exe:  $(SHARED_FILES) $(TEST_FILES) $(HEADERS)
 
 .PHONY: clean
 clean:
-	rm -f tests.exe
+	rm -vf tests.exe
