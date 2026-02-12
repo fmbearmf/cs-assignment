@@ -30,6 +30,7 @@
             gnumake
             clang-tools
             pkg-config
+            bear
           ];
         };
       }

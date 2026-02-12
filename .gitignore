@@ -4,3 +4,5 @@
 gcm.cache/
 *.dSYM/
 .direnv/
+.cache/
+compile_commands.json
