@@ -25,7 +25,7 @@ CXXFLAGS += -Wfloat-equal -Wredundant-decls -Wshadow -Wconversion -Wuninitialize
 # endif
 
 # list .h files here
-HEADERS =
+HEADERS = src/bag.h
 
 # list .cpp files here
 TEST_FILES = tests.cpp
