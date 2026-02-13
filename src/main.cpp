@@ -1,11 +1,8 @@
-#include <array>
-#include <format>
 #include <iostream>
 #include <utility>
 #include <vector>
 
-using std::cin, std::cout, std::endl, std::vector, std::pair, std::array,
-    std::format;
+using namespace std;
 
 constexpr auto knight_move_offsets()
 {
@@ -21,22 +18,33 @@ constexpr auto knight_move_offsets()
 }
 
 void find_positions(int row, int col, int moves_left,
-                    array<array<int, 8>, 8>& reachable,
+                    vector<pair<int, int>>& path,
+                    vector<vector<pair<int, int>>>& all_paths,
                     const vector<pair<int, int>>& offsets)
 {
+  path.emplace_back(row, col);
+
   if (moves_left == 0) {
-    reachable[row][col]++;
+    all_paths.push_back(path);
+    path.pop_back();
     return;
   }
 
+  vector<pair<int, int>> valid_next_positions;
   for (const auto& [row_off, col_off] : offsets) {
     int new_row = row + row_off;
     int new_col = col + col_off;
 
     if ((new_row >= 0) && (new_row < 8) && (new_col >= 0) && (new_col < 8)) {
-      find_positions(new_row, new_col, moves_left - 1, reachable, offsets);
+      valid_next_positions.emplace_back(new_row, new_col);
     }
   }
+
+  for (const auto& [new_row, new_col] : valid_next_positions) {
+    find_positions(new_row, new_col, moves_left - 1, path, all_paths, offsets);
+  }
+
+  path.pop_back();
 }
 
 int main(int argc, char* argv[])
@@ -52,21 +60,18 @@ int main(int argc, char* argv[])
 
   const auto knight_offsets = knight_move_offsets();
 
-  array<array<int, 8>, 8> reachable{};
+  vector<pair<int, int>> path;
+  vector<vector<pair<int, int>>> all_paths;
 
-  find_positions(row, col, N, reachable, knight_offsets);
+  find_positions(row, col, N, path, all_paths, knight_offsets);
 
-  cout << "   ";
-  for (int display_col = 0; display_col < 8; display_col++) {
-    cout << format("{:5}", display_col);
-  }
-  cout << '\n';
+  for (auto& path : all_paths) {
+    for (size_t i = 0; i < path.size(); i++) {
+      if (i > 0) {
+        cout << " -> ";
+      }
 
-  for (int i = 0; i < 8; i++) {
-    cout << format("{}  ", i);
-
-    for (int j = 0; j < 8; j++) {
-      cout << format("{:5}", reachable[i][j]);
+      cout << '(' << path[i].first << ", " << path[i].second << ')';
     }
     cout << '\n';
   }
