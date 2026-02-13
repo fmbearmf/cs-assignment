@@ -1,9 +1,11 @@
 #include <array>
+#include <format>
 #include <iostream>
 #include <utility>
 #include <vector>
 
-using std::cin, std::cout, std::endl, std::vector, std::pair, std::array;
+using std::cin, std::cout, std::endl, std::vector, std::pair, std::array,
+    std::format;
 
 constexpr auto knight_move_offsets()
 {
@@ -19,11 +21,11 @@ constexpr auto knight_move_offsets()
 }
 
 void find_positions(int row, int col, int moves_left,
-                    array<array<bool, 8>, 8>& reachable,
+                    array<array<int, 8>, 8>& reachable,
                     const vector<pair<int, int>>& offsets)
 {
   if (moves_left == 0) {
-    reachable[row][col] = true;
+    reachable[row][col]++;
     return;
   }
 
@@ -50,16 +52,23 @@ int main(int argc, char* argv[])
 
   const auto knight_offsets = knight_move_offsets();
 
-  array<array<bool, 8>, 8> reachable{};
+  array<array<int, 8>, 8> reachable{};
 
   find_positions(row, col, N, reachable, knight_offsets);
 
+  cout << "   ";
+  for (int display_col = 0; display_col < 8; display_col++) {
+    cout << format("{:5}", display_col);
+  }
+  cout << '\n';
+
   for (int i = 0; i < 8; i++) {
+    cout << format("{}  ", i);
+
     for (int j = 0; j < 8; j++) {
-      if (reachable[i][j]) {
-        cout << '(' << i << ", " << j << ")\n";
-      }
+      cout << format("{:5}", reachable[i][j]);
     }
+    cout << '\n';
   }
 
   return 0;
