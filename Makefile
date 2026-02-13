@@ -28,16 +28,16 @@ CXXFLAGS += -Wfloat-equal -Wredundant-decls -Wshadow -Wconversion -Wuninitialize
 HEADERS =
 
 # list .cpp files here
-TEST_FILES = tests.cpp
+PROGRAM_FILES = src/main.cpp
 SHARED_FILES =
 
 .PHONY: all
-all: tests.exe
+all: program.exe
 
-.PHONY: tests.exe # Always force rebuild of tests
-tests.exe:  $(SHARED_FILES) $(TEST_FILES) $(HEADERS)
-	$(CXX) $(CXXFLAGS) $(SHARED_FILES) $(TEST_FILES) -o $@
+.PHONY: program.exe # Always force rebuild of tests
+program.exe:  $(SHARED_FILES) $(PROGRAM_FILES) $(HEADERS)
+	$(CXX) $(CXXFLAGS) $(SHARED_FILES) $(PROGRAM_FILES) -o $@
 
 .PHONY: clean
 clean:
-	rm -vf tests.exe
+	rm -vf program.exe
